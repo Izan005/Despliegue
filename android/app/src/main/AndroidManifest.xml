@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mycompany.pruebacongithub"
+    package="com.mycompany.practica1despliegue"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
 
 
     <application
-        android:label="PruebaConGithub"
+        android:label="Practica1Despliegue"
         tools:replace="android:label"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
@@ -45,7 +45,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="pruebacongithub" android:host="pruebacongithub.com" />
+                <data android:scheme="practica1despliegue" android:host="practica1despliegue.com" />
             </intent-filter>
 
         </activity>
