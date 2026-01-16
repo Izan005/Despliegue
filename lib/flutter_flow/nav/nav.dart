@@ -45,6 +45,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: HomePageWidget.routeName,
           path: HomePageWidget.routePath,
           builder: (context, params) => HomePageWidget(),
+        ),
+        FFRoute(
+          name: CrearAlumnoWidget.routeName,
+          path: CrearAlumnoWidget.routePath,
+          builder: (context, params) => CrearAlumnoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
