@@ -7,41 +7,51 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'crear_alumno_model.dart';
-export 'crear_alumno_model.dart';
+import 'editar_asignatura_model.dart';
+export 'editar_asignatura_model.dart';
 
-class CrearAlumnoWidget extends StatefulWidget {
-  const CrearAlumnoWidget({super.key});
+class EditarAsignaturaWidget extends StatefulWidget {
+  const EditarAsignaturaWidget({
+    super.key,
+    required this.asignatura,
+  });
 
-  static String routeName = 'CrearAlumno';
-  static String routePath = '/crearAlumno';
+  final dynamic asignatura;
+
+  static String routeName = 'EditarAsignatura';
+  static String routePath = '/editarAsignatura';
 
   @override
-  State<CrearAlumnoWidget> createState() => _CrearAlumnoWidgetState();
+  State<EditarAsignaturaWidget> createState() => _EditarAsignaturaWidgetState();
 }
 
-class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
-  late CrearAlumnoModel _model;
+class _EditarAsignaturaWidgetState extends State<EditarAsignaturaWidget> {
+  late EditarAsignaturaModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => CrearAlumnoModel());
+    _model = createModel(context, () => EditarAsignaturaModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.asignaturasdb = await actions.mostrarAsignaturasAction();
-      _model.listaAsignaturas = _model.asignaturasdb!.toList().cast<dynamic>();
-      safeSetState(() {});
+      _model.alumnosMatriculados =
+          await actions.alumnosMatriculadosAAsignaturaAction(
+        getJsonField(
+          widget.asignatura,
+          r'''$.id''',
+        ),
+      );
     });
 
-    _model.textController1 ??= TextEditingController();
-    _model.textFieldFocusNode1 ??= FocusNode();
-
-    _model.textController2 ??= TextEditingController();
-    _model.textFieldFocusNode2 ??= FocusNode();
+    _model.textController ??= TextEditingController(
+        text: getJsonField(
+      widget.asignatura,
+      r'''$.nombre''',
+    ).toString());
+    _model.textFieldFocusNode ??= FocusNode();
   }
 
   @override
@@ -79,7 +89,7 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
             },
           ),
           title: Text(
-            'Crear Nuevo Alumno',
+            'Editar Asignatura',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   font: GoogleFonts.interTight(
                     fontWeight:
@@ -105,7 +115,7 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Flexible(
+              Expanded(
                 child: Align(
                   alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
@@ -143,8 +153,8 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
                               child: Container(
                                 width: double.infinity,
                                 child: TextFormField(
-                                  controller: _model.textController1,
-                                  focusNode: _model.textFieldFocusNode1,
+                                  controller: _model.textController,
+                                  focusNode: _model.textFieldFocusNode,
                                   autofocus: false,
                                   enabled: true,
                                   obscureText: false,
@@ -256,129 +266,7 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
                                   cursorColor:
                                       FlutterFlowTheme.of(context).primaryText,
                                   enableInteractiveSelection: true,
-                                  validator: _model.textController1Validator
-                                      .asValidator(context),
-                                ),
-                              ),
-                            ),
-                            Flexible(
-                              child: Container(
-                                width: double.infinity,
-                                child: TextFormField(
-                                  controller: _model.textController2,
-                                  focusNode: _model.textFieldFocusNode2,
-                                  autofocus: false,
-                                  enabled: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    labelText: 'Apellidos',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          font: GoogleFonts.inter(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
-                                    hintText: 'Apellidos Alumno',
-                                    hintStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          font: GoogleFonts.inter(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x46909090),
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color:
-                                            FlutterFlowTheme.of(context).error,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color:
-                                            FlutterFlowTheme.of(context).error,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        font: GoogleFonts.inter(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
-                                  cursorColor:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  enableInteractiveSelection: true,
-                                  validator: _model.textController2Validator
+                                  validator: _model.textControllerValidator
                                       .asValidator(context),
                                 ),
                               ),
@@ -388,14 +276,17 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
                                 alignment: AlignmentDirectional(0.0, 1.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    await actions.crearAlumnoAction(
-                                      _model.textController1.text,
-                                      _model.textController2.text,
+                                    await actions.modificarAsignaturaAction(
+                                      _model.textController.text,
+                                      getJsonField(
+                                        widget.asignatura,
+                                        r'''$.id''',
+                                      ),
                                     );
 
                                     context.pushNamed(HomePageWidget.routeName);
                                   },
-                                  text: ' Crear Alumno',
+                                  text: 'Modificar Asignatura',
                                   options: FFButtonOptions(
                                     width: double.infinity,
                                     height: 40.0,
@@ -433,6 +324,125 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
                                   ),
                                 ),
                               ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional(0.0, 1.0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    await actions.eliminarAsignaturaAction(
+                                      getJsonField(
+                                        widget.asignatura,
+                                        r'''$.id''',
+                                      ),
+                                    );
+
+                                    context.pushNamed(HomePageWidget.routeName);
+                                  },
+                                  text: 'Eliminar',
+                                  options: FFButtonOptions(
+                                    width: double.infinity,
+                                    height: 40.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color: Color(0xFFEF393C),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          font: GoogleFonts.interTight(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .fontStyle,
+                                          ),
+                                          color: Colors.white,
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .fontStyle,
+                                        ),
+                                    elevation: 0.0,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'Alumnos matriculados',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                            ),
+                            Builder(
+                              builder: (context) {
+                                final alumnos =
+                                    _model.alumnosMatriculados!.toList();
+
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: alumnos.length,
+                                  itemBuilder: (context, alumnosIndex) {
+                                    final alumnosItem = alumnos[alumnosIndex];
+                                    return Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Text(
+                                        getJsonField(
+                                          alumnosItem,
+                                          r'''$.id_alumno''',
+                                        ).toString(),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              font: GoogleFonts.inter(
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .fontStyle,
+                                              ),
+                                              letterSpacing: 0.0,
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontStyle,
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                             ),
                           ].divide(SizedBox(height: 20.0)),
                         ),

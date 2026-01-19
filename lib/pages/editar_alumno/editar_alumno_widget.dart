@@ -5,42 +5,47 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'crear_alumno_model.dart';
-export 'crear_alumno_model.dart';
+import 'editar_alumno_model.dart';
+export 'editar_alumno_model.dart';
 
-class CrearAlumnoWidget extends StatefulWidget {
-  const CrearAlumnoWidget({super.key});
+class EditarAlumnoWidget extends StatefulWidget {
+  const EditarAlumnoWidget({
+    super.key,
+    required this.alumno,
+  });
 
-  static String routeName = 'CrearAlumno';
-  static String routePath = '/crearAlumno';
+  final dynamic alumno;
+
+  static String routeName = 'EditarAlumno';
+  static String routePath = '/editarAlumno';
 
   @override
-  State<CrearAlumnoWidget> createState() => _CrearAlumnoWidgetState();
+  State<EditarAlumnoWidget> createState() => _EditarAlumnoWidgetState();
 }
 
-class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
-  late CrearAlumnoModel _model;
+class _EditarAlumnoWidgetState extends State<EditarAlumnoWidget> {
+  late EditarAlumnoModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => CrearAlumnoModel());
+    _model = createModel(context, () => EditarAlumnoModel());
 
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.asignaturasdb = await actions.mostrarAsignaturasAction();
-      _model.listaAsignaturas = _model.asignaturasdb!.toList().cast<dynamic>();
-      safeSetState(() {});
-    });
-
-    _model.textController1 ??= TextEditingController();
+    _model.textController1 ??= TextEditingController(
+        text: getJsonField(
+      widget.alumno,
+      r'''$.nombre''',
+    ).toString());
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
+    _model.textController2 ??= TextEditingController(
+        text: getJsonField(
+      widget.alumno,
+      r'''$.apellidos''',
+    ).toString());
     _model.textFieldFocusNode2 ??= FocusNode();
   }
 
@@ -79,7 +84,7 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
             },
           ),
           title: Text(
-            'Crear Nuevo Alumno',
+            'Editar Alumno',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   font: GoogleFonts.interTight(
                     fontWeight:
@@ -388,14 +393,18 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
                                 alignment: AlignmentDirectional(0.0, 1.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    await actions.crearAlumnoAction(
+                                    await actions.modificarAlumnoAction(
                                       _model.textController1.text,
                                       _model.textController2.text,
+                                      getJsonField(
+                                        widget.alumno,
+                                        r'''$.id''',
+                                      ),
                                     );
 
                                     context.pushNamed(HomePageWidget.routeName);
                                   },
-                                  text: ' Crear Alumno',
+                                  text: 'Modificar Alumno',
                                   options: FFButtonOptions(
                                     width: double.infinity,
                                     height: 40.0,
@@ -404,6 +413,59 @@ class _CrearAlumnoWidgetState extends State<CrearAlumnoWidget> {
                                     iconPadding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 0.0, 0.0),
                                     color: FlutterFlowTheme.of(context).primary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          font: GoogleFonts.interTight(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .fontStyle,
+                                          ),
+                                          color: Colors.white,
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .fontStyle,
+                                        ),
+                                    elevation: 0.0,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional(0.0, 1.0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    await actions.eliminarAlumnoAction(
+                                      getJsonField(
+                                        widget.alumno,
+                                        r'''$.id''',
+                                      ),
+                                    );
+
+                                    context.pushNamed(HomePageWidget.routeName);
+                                  },
+                                  text: 'Eliminar',
+                                  options: FFButtonOptions(
+                                    width: double.infinity,
+                                    height: 40.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color: Color(0xFFEF393C),
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .override(

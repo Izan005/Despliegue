@@ -50,6 +50,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: CrearAlumnoWidget.routeName,
           path: CrearAlumnoWidget.routePath,
           builder: (context, params) => CrearAlumnoWidget(),
+        ),
+        FFRoute(
+          name: EditarAlumnoWidget.routeName,
+          path: EditarAlumnoWidget.routePath,
+          builder: (context, params) => EditarAlumnoWidget(
+            alumno: params.getParam(
+              'alumno',
+              ParamType.JSON,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: EditarAsignaturaWidget.routeName,
+          path: EditarAsignaturaWidget.routePath,
+          builder: (context, params) => EditarAsignaturaWidget(
+            asignatura: params.getParam(
+              'asignatura',
+              ParamType.JSON,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: CrearAsignaturaWidget.routeName,
+          path: CrearAsignaturaWidget.routePath,
+          builder: (context, params) => CrearAsignaturaWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
