@@ -4,8 +4,23 @@ import 'editar_alumno_widget.dart' show EditarAlumnoWidget;
 import 'package:flutter/material.dart';
 
 class EditarAlumnoModel extends FlutterFlowModel<EditarAlumnoWidget> {
+  ///  Local state fields for this page.
+
+  List<dynamic> listaAsignaturas = [];
+  void addToListaAsignaturas(dynamic item) => listaAsignaturas.add(item);
+  void removeFromListaAsignaturas(dynamic item) =>
+      listaAsignaturas.remove(item);
+  void removeAtIndexFromListaAsignaturas(int index) =>
+      listaAsignaturas.removeAt(index);
+  void insertAtIndexInListaAsignaturas(int index, dynamic item) =>
+      listaAsignaturas.insert(index, item);
+  void updateListaAsignaturasAtIndex(int index, Function(dynamic) updateFn) =>
+      listaAsignaturas[index] = updateFn(listaAsignaturas[index]);
+
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Custom Action - mostrarAsignaturasMatriculadasPorAlumnoAction] action in EditarAlumno widget.
+  List<dynamic>? asignaturas;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;

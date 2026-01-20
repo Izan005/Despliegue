@@ -11,3 +11,10 @@ export 'alumnos_matriculados_a_asignatura_action.dart'
     show alumnosMatriculadosAAsignaturaAction;
 export 'mostrar_alumnos_matriculados_action.dart'
     show mostrarAlumnosMatriculadosAction;
+export 'desmatricular_action.dart' show desmatricularAction;
+export 'mostrar_asignaturas_matriculadas_por_alumno_action.dart'
+    show mostrarAsignaturasMatriculadasPorAlumnoAction;
+export 'mostrar_alumno_por_id_action.dart' show mostrarAlumnoPorIdAction;
+export 'mostrar_asignatura_por_nombre_action.dart'
+    show mostrarAsignaturaPorNombreAction;
+export 'matricular_action.dart' show matricularAction;

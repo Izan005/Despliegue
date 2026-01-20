@@ -5,6 +5,8 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'editar_alumno_model.dart';
 export 'editar_alumno_model.dart';
@@ -33,6 +35,19 @@ class _EditarAlumnoWidgetState extends State<EditarAlumnoWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => EditarAlumnoModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.asignaturas =
+          await actions.mostrarAsignaturasMatriculadasPorAlumnoAction(
+        getJsonField(
+          widget.alumno,
+          r'''$.id''',
+        ),
+      );
+      _model.listaAsignaturas = _model.asignaturas!.toList().cast<dynamic>();
+      safeSetState(() {});
+    });
 
     _model.textController1 ??= TextEditingController(
         text: getJsonField(
@@ -118,7 +133,7 @@ class _EditarAlumnoWidgetState extends State<EditarAlumnoWidget> {
                         EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                     child: Container(
                       width: double.infinity,
-                      height: 400.0,
+                      height: 500.0,
                       decoration: BoxDecoration(
                         color: Color(0xDDF6F6F6),
                         boxShadow: [
@@ -494,6 +509,197 @@ class _EditarAlumnoWidgetState extends State<EditarAlumnoWidget> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
+                              ),
+                            ),
+                            Text(
+                              'Asignaturas matriculadas',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                            ),
+                            Expanded(
+                              child: Builder(
+                                builder: (context) {
+                                  final listaAsignatura =
+                                      _model.listaAsignaturas.toList();
+
+                                  return ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listaAsignatura.length,
+                                    itemBuilder:
+                                        (context, listaAsignaturaIndex) {
+                                      final listaAsignaturaItem =
+                                          listaAsignatura[listaAsignaturaIndex];
+                                      return Material(
+                                        color: Colors.transparent,
+                                        elevation: 2.0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 67.9,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          child: Align(
+                                            alignment:
+                                                AlignmentDirectional(0.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      10.0, 0.0, 0.0, 0.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Text(
+                                                    'Asignatura: ',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          font:
+                                                              GoogleFonts.inter(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    getJsonField(
+                                                      listaAsignaturaItem,
+                                                      r'''$.id_asignatura''',
+                                                    ).toString(),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          font:
+                                                              GoogleFonts.inter(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Align(
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                              1.0, 0.0),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    10.0,
+                                                                    0.0),
+                                                        child: InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            await actions
+                                                                .desmatricularAction(
+                                                              getJsonField(
+                                                                listaAsignaturaItem,
+                                                                r'''$.id_alumno''',
+                                                              ),
+                                                              getJsonField(
+                                                                listaAsignaturaItem,
+                                                                r'''$.id_asignatura''',
+                                                              ),
+                                                            );
+
+                                                            context.pushNamed(
+                                                              EditarAlumnoWidget
+                                                                  .routeName,
+                                                              queryParameters: {
+                                                                'alumno':
+                                                                    serializeParam(
+                                                                  widget
+                                                                      .alumno,
+                                                                  ParamType
+                                                                      .JSON,
+                                                                ),
+                                                              }.withoutNulls,
+                                                            );
+                                                          },
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .trashAlt,
+                                                            color: Color(
+                                                                0xFFB70000),
+                                                            size: 24.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ].divide(SizedBox(height: 20.0)),

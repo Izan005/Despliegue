@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
@@ -87,34 +88,93 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Align(
-                  alignment: AlignmentDirectional(1.0, -1.0),
-                  child: FlutterFlowChoiceChips(
-                    options: [ChipData('Alumnos'), ChipData('Asignaturas')],
-                    onChanged: (val) async {
-                      safeSetState(
-                          () => _model.choiceChipsValue = val?.firstOrNull);
-                      if (_model.choiceChipsValue == 'Alumnos') {
-                        _model.alumnosdbChips =
-                            await actions.mostrarAlumnosAction();
-                        _model.listaAlumnos =
-                            _model.alumnosdbChips!.toList().cast<dynamic>();
-                        safeSetState(() {});
-                      } else {
-                        _model.asignturasdbChips =
-                            await actions.mostrarAsignaturasAction();
-                        _model.listaAlumnos =
-                            _model.asignturasdbChips!.toList().cast<dynamic>();
-                        safeSetState(() {});
-                      }
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          context.pushNamed(MatricularAlumnoWidget.routeName);
+                        },
+                        text: 'Matricular',
+                        options: FFButtonOptions(
+                          height: 37.2,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 16.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: FlutterFlowTheme.of(context).primary,
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    font: GoogleFonts.interTight(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .fontStyle,
+                                  ),
+                          elevation: 0.0,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional(1.0, -1.0),
+                        child: FlutterFlowChoiceChips(
+                          options: [
+                            ChipData('Alumnos'),
+                            ChipData('Asignaturas')
+                          ],
+                          onChanged: (val) async {
+                            safeSetState(() =>
+                                _model.choiceChipsValue = val?.firstOrNull);
+                            if (_model.choiceChipsValue == 'Alumnos') {
+                              _model.alumnosdbChips =
+                                  await actions.mostrarAlumnosAction();
+                              _model.listaAlumnos = _model.alumnosdbChips!
+                                  .toList()
+                                  .cast<dynamic>();
+                              safeSetState(() {});
+                            } else {
+                              _model.asignturasdbChips =
+                                  await actions.mostrarAsignaturasAction();
+                              _model.listaAlumnos = _model.asignturasdbChips!
+                                  .toList()
+                                  .cast<dynamic>();
+                              safeSetState(() {});
+                            }
 
-                      safeSetState(() {});
-                    },
-                    selectedChipStyle: ChipStyle(
-                      backgroundColor: FlutterFlowTheme.of(context).primary,
-                      textStyle:
-                          FlutterFlowTheme.of(context).bodyMedium.override(
-                                font: GoogleFonts.inter(
+                            safeSetState(() {});
+                          },
+                          selectedChipStyle: ChipStyle(
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).primary,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                                  color: FlutterFlowTheme.of(context).info,
+                                  letterSpacing: 0.0,
                                   fontWeight: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .fontWeight,
@@ -122,59 +182,55 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .bodyMedium
                                       .fontStyle,
                                 ),
-                                color: FlutterFlowTheme.of(context).info,
-                                letterSpacing: 0.0,
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .fontStyle,
-                              ),
-                      iconColor: FlutterFlowTheme.of(context).info,
-                      iconSize: 16.0,
-                      elevation: 0.0,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    unselectedChipStyle: ChipStyle(
-                      backgroundColor:
-                          FlutterFlowTheme.of(context).secondaryBackground,
-                      textStyle: FlutterFlowTheme.of(context)
-                          .bodyMedium
-                          .override(
-                            font: GoogleFonts.inter(
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontStyle,
-                            ),
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontStyle,
+                            iconColor: FlutterFlowTheme.of(context).info,
+                            iconSize: 16.0,
+                            elevation: 0.0,
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                      iconColor: FlutterFlowTheme.of(context).secondaryText,
-                      iconSize: 16.0,
-                      elevation: 2.0,
-                      borderRadius: BorderRadius.circular(8.0),
+                          unselectedChipStyle: ChipStyle(
+                            backgroundColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontStyle,
+                                ),
+                            iconColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            iconSize: 16.0,
+                            elevation: 2.0,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          chipSpacing: 8.0,
+                          rowSpacing: 8.0,
+                          multiselect: false,
+                          initialized: _model.choiceChipsValue != null,
+                          alignment: WrapAlignment.start,
+                          controller: _model.choiceChipsValueController ??=
+                              FormFieldController<List<String>>(
+                            ['Alumnos'],
+                          ),
+                          wrapped: true,
+                        ),
+                      ),
                     ),
-                    chipSpacing: 8.0,
-                    rowSpacing: 8.0,
-                    multiselect: false,
-                    initialized: _model.choiceChipsValue != null,
-                    alignment: WrapAlignment.start,
-                    controller: _model.choiceChipsValueController ??=
-                        FormFieldController<List<String>>(
-                      ['Alumnos'],
-                    ),
-                    wrapped: true,
-                  ),
+                  ],
                 ),
                 Expanded(
                   child: Stack(

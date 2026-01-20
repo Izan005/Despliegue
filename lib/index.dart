@@ -6,3 +6,5 @@ export '/pages/editar_asignatura/editar_asignatura_widget.dart'
     show EditarAsignaturaWidget;
 export '/pages/crear_asignatura/crear_asignatura_widget.dart'
     show CrearAsignaturaWidget;
+export '/pages/matricular_alumno/matricular_alumno_widget.dart'
+    show MatricularAlumnoWidget;

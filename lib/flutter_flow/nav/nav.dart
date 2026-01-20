@@ -75,6 +75,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: CrearAsignaturaWidget.routeName,
           path: CrearAsignaturaWidget.routePath,
           builder: (context, params) => CrearAsignaturaWidget(),
+        ),
+        FFRoute(
+          name: MatricularAlumnoWidget.routeName,
+          path: MatricularAlumnoWidget.routePath,
+          builder: (context, params) => MatricularAlumnoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -6,6 +6,7 @@ import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'editar_asignatura_model.dart';
 export 'editar_asignatura_model.dart';
@@ -44,6 +45,9 @@ class _EditarAsignaturaWidgetState extends State<EditarAsignaturaWidget> {
           r'''$.id''',
         ),
       );
+      _model.listaAlumnos =
+          _model.alumnosMatriculados!.toList().cast<dynamic>();
+      safeSetState(() {});
     });
 
     _model.textController ??= TextEditingController(
@@ -115,7 +119,7 @@ class _EditarAsignaturaWidgetState extends State<EditarAsignaturaWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(
+              Flexible(
                 child: Align(
                   alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
@@ -123,7 +127,7 @@ class _EditarAsignaturaWidgetState extends State<EditarAsignaturaWidget> {
                         EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                     child: Container(
                       width: double.infinity,
-                      height: 400.0,
+                      height: 500.0,
                       decoration: BoxDecoration(
                         color: Color(0xDDF6F6F6),
                         boxShadow: [
@@ -396,53 +400,177 @@ class _EditarAsignaturaWidgetState extends State<EditarAsignaturaWidget> {
                                         .fontStyle,
                                   ),
                             ),
-                            Builder(
-                              builder: (context) {
-                                final alumnos =
-                                    _model.alumnosMatriculados!.toList();
+                            Flexible(
+                              child: Builder(
+                                builder: (context) {
+                                  final alumnos = _model.listaAlumnos.toList();
 
-                                return ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: alumnos.length,
-                                  itemBuilder: (context, alumnosIndex) {
-                                    final alumnosItem = alumnos[alumnosIndex];
-                                    return Align(
-                                      alignment: AlignmentDirectional(0.0, 0.0),
-                                      child: Text(
-                                        getJsonField(
-                                          alumnosItem,
-                                          r'''$.id_alumno''',
-                                        ).toString(),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              font: GoogleFonts.inter(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
+                                  return ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: alumnos.length,
+                                    separatorBuilder: (_, __) =>
+                                        SizedBox(height: 10.0),
+                                    itemBuilder: (context, alumnosIndex) {
+                                      final alumnosItem = alumnos[alumnosIndex];
+                                      return Material(
+                                        color: Colors.transparent,
+                                        elevation: 2.0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 68.79,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          child: Align(
+                                            alignment:
+                                                AlignmentDirectional(0.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      10.0, 0.0, 0.0, 0.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Text(
+                                                    'Alumno: ',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
                                                         .bodyMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
+                                                        .override(
+                                                          font:
+                                                              GoogleFonts.inter(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    getJsonField(
+                                                      alumnosItem,
+                                                      r'''$.id_alumno''',
+                                                    ).toString(),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
                                                         .bodyMedium
-                                                        .fontStyle,
+                                                        .override(
+                                                          font:
+                                                              GoogleFonts.inter(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Align(
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                              1.0, 0.0),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    10.0,
+                                                                    0.0),
+                                                        child: InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            await actions
+                                                                .desmatricularAction(
+                                                              getJsonField(
+                                                                alumnosItem,
+                                                                r'''$.id_alumno''',
+                                                              ),
+                                                              getJsonField(
+                                                                alumnosItem,
+                                                                r'''$.id_asignatura''',
+                                                              ),
+                                                            );
+
+                                                            context.pushNamed(
+                                                              EditarAsignaturaWidget
+                                                                  .routeName,
+                                                              queryParameters: {
+                                                                'asignatura':
+                                                                    serializeParam(
+                                                                  widget
+                                                                      .asignatura,
+                                                                  ParamType
+                                                                      .JSON,
+                                                                ),
+                                                              }.withoutNulls,
+                                                            );
+                                                          },
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .trashAlt,
+                                                            color: Color(
+                                                                0xFFBA0909),
+                                                            size: 24.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
                                             ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           ].divide(SizedBox(height: 20.0)),
                         ),
