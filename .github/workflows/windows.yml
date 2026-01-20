@@ -1,1 +1,46 @@
+name: Build Windows App and Deploy
 
+on:
+  push:
+    branches: ["flutterflow"]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout source repo
+      uses: actions/checkout@v4
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        cache: true
+
+    - name: Enable Windows desktop
+      run: flutter config --enable-windows-desktop
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Build Windows (release)
+      run: flutter build windows --release
+
+    - name: Package outputs
+      run: |
+        mkdir out
+        copy build\windows\x64\runner\Release\*.exe out\app-windows-latest.exe
+
+    - name: Deploy EXE to DespliegueEscritorio repo
+      run: |
+        git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/Izan005/DespliegueEscritorio escritorio-repo
+        rmdir /s /q escritorio-repo
+        git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/Izan005/DespliegueEscritorio escritorio-repo
+        copy out\app-windows-latest.exe escritorio-repo\app-windows-latest.exe
+        cd escritorio-repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Deploy Windows EXE (auto)" || echo "No changes"
+        git push
