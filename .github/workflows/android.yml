@@ -1,0 +1,30 @@
+- name: Setup Java (for Android)
+uses: actions/setup-java@v4
+with:
+distribution: "temurin"
+java-version: "17"
+- name: Setup Flutter
+uses: subosito/flutter-action@v2
+with:
+channel: stable
+cache: true
+- name: Get dependencies
+run: flutter pub get
+- name: Build APK (release)
+run: flutter build apk --release
+- name: Package outputs
+run: |
+mkdir -p out
+cp build/app/outputs/flutter-apk/app-release.apk out/ || true
+- name: Deploy to mobile
+run: |
+git clone https://x-access-token:${{ secrets.ACCESS_
+TOKEN }}@github.com/repositorio mobile-repo
+rm -rf mobile-repo/*
+cp out/app-release.apk mobile-repo/ || true
+cd mobile-repo
+git config user.name "github-actions[bot]"
+git config user.email "github-actions[bot]@users.noreply.github.com"
+git add .
+git commit -m "Deploy Android build"
+git push
