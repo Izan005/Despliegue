@@ -1,44 +1,54 @@
-name: Build Windows App and Deploy
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Build and Deploy Windows Desktop
 
 on:
   push:
-    branches: ["flutterflow"]
+    branches:
+      - flutterflow
 
 jobs:
-  build-windows:
+  build-and-deploy-windows:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout source repo
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: stable
-        cache: true
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
 
-    - name: Enable Windows desktop
-      run: flutter config --enable-windows-desktop
+      - name: Enable Windows desktop + install deps
+        run: |
+          flutter config --enable-windows-desktop
+          flutter doctor -v
+          flutter pub get
 
-    - name: Get dependencies
-      run: flutter pub get
+      - name: Build Windows (Release)
+        run: flutter build windows --release
 
-    - name: Build Windows (release)
-      run: flutter build windows --release
+      - name: Create ZIP
+        shell: pwsh
+        run: |
+          $out = "build/windows/x64/runner/Release"
+          if (!(Test-Path $out)) { throw "Build output not found: $out" }
+          Compress-Archive -Path "$out\*" -DestinationPath "windows-release.zip" -Force
 
-    - name: Package output as ZIP
-      run: |
-        mkdir out
-        powershell Compress-Archive -Path build\windows\x64\runner\Release\*.exe -DestinationPath out\app-windows-latest.zip
-
-    - name: Deploy ZIP to DespliegueEscritorio repo
-      run: |
-        git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/Izan005/DespliegueEscritorio escritorio-repo
-        copy out\app-windows-latest.zip escritorio-repo\
-        cd escritorio-repo
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        git commit -m "Deploy Windows ZIP (auto)" || echo "No changes"
-        git push
+      - name: Deploy ZIP to repositoryDesktop
+        shell: bash
+        run: |
+          git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/dgarsau/DespliegueEscritorio desktop-repo
+          rm -rf desktop-repo/*
+          cp windows-release.zip desktop-repo/
+          cd desktop-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy Windows build"
+          git push
