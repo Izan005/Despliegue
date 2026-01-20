@@ -27,20 +27,18 @@ jobs:
     - name: Build Windows (release)
       run: flutter build windows --release
 
-    - name: Package outputs
+    - name: Package output as ZIP
       run: |
         mkdir out
-        copy build\windows\x64\runner\Release\*.exe out\app-windows-latest.exe
+        powershell Compress-Archive -Path build\windows\x64\runner\Release\*.exe -DestinationPath out\app-windows-latest.zip
 
-    - name: Deploy EXE to DespliegueEscritorio repo
+    - name: Deploy ZIP to DespliegueEscritorio repo
       run: |
         git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/Izan005/DespliegueEscritorio escritorio-repo
-        rmdir /s /q escritorio-repo
-        git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/Izan005/DespliegueEscritorio escritorio-repo
-        copy out\app-windows-latest.exe escritorio-repo\app-windows-latest.exe
+        copy out\app-windows-latest.zip escritorio-repo\
         cd escritorio-repo
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "Deploy Windows EXE (auto)" || echo "No changes"
+        git commit -m "Deploy Windows ZIP (auto)" || echo "No changes"
         git push
