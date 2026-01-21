@@ -43,7 +43,7 @@ jobs:
       - name: Deploy ZIP to repositoryDesktop
         shell: bash
         run: |
-          git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/dgarsau/DespliegueEscritorio desktop-repo
+          git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/Izan005/DespliegueEscritorio desktop-repo
           rm -rf desktop-repo/*
           cp windows-release.zip desktop-repo/
           cd desktop-repo
